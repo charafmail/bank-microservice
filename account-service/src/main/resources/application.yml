@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: account-service
+  config:
+    import: optional:configserver:http://localhost:9999
+
+server:
+  port: 8082
+
