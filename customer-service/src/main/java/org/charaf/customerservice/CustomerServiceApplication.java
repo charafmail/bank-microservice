@@ -1,8 +1,8 @@
-package org.charaf.cutomerservice;
+package org.charaf.customerservice;
 
 import org.charaf.customerservice.config.GlobalConfig;
-import org.charaf.cutomerservice.entities.Customer;
-import org.charaf.cutomerservice.repository.CustomerRepository;
+import org.charaf.customerservice.entities.Customer;
+import org.charaf.customerservice.repository.CustomerRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Bean;
 import java.util.List;
 
 @SpringBootApplication
-@EnableConfigurationProperties(GlobalConfig.class)
+@EnableConfigurationProperties({GlobalConfig.class})
 public class CustomerServiceApplication {
 
 	public static void main(String[] args) {

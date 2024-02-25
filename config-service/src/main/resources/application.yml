@@ -1,3 +1,9 @@
+# http://localhost:9999/application/default  pour voir la config
+# http://localhost:9999/customer-service/default
+# http://localhost:9999/customer-service/dev
+server:
+  port: 9999
+
 spring:
   application:
     name: config-service
@@ -5,7 +11,22 @@ spring:
     config:
       server:
         git:
-          uri: https://github.com/charafmail/bank-config-repo.git
+          uri: https://github.com/charafmail/bank-config-repo.git # URI du dépôt Git contenant les fichiers de configuration pour les applications
+          default-label: master # le nom de la branche
+    discovery:
+      enabled: true # Active la découverte de services, permettant à ce service de s'enregistrer avec un serveur de découverte
 
-server:
-  port: 9999
+eureka:
+  instance:
+    prefer-ip-address: true # Configure le client Eureka pour utiliser l'adresse IP au lieu du nom d'hôte lors de l'enregistrement
+  client:
+    service-url:
+      defaultZone: ${DISCOVERY_SERVICE_URL:http://localhost:8761/eureka}  # URL du serveur Eureka pour l'enregistrement, avec prise en charge d'une variable d'environnement pour une configuration dynamique
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+
+

@@ -2,7 +2,27 @@ spring:
   application:
     name: customer-service
   config:
-    import: optional:configserver:http://localhost:9999
+    import: optional:configserver:${CONFIG_SERVICE_URL:http://bank-config-service:9999}
+  security:
+    oauth2:
+      resourceserver:
+        # pour recuperer la cle public depuis keclock
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/bdcc-realm/protocol/openid-connect/certs
+          issuer-uri: http://localhost:8080/realms/bdcc-realm
+
+      #cloud:
+      # config:
+      #   enabled: false
+      # discovery:
+      #   enabled: false
+      #datasource:
+      #  url: jdbc:h2:mem:customers-db
+      # h2:
+      #  console:
+      #   enabled: true
 
 server:
   port: 8081
+
+

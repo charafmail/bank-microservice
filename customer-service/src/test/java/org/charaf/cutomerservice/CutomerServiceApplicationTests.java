@@ -1,4 +1,4 @@
-package org.charaf.cutomerservice;
+package org.charaf.customerservice;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

@@ -26,7 +26,7 @@ public class AccountServiceApplication {
     public CommandLineRunner CommandLineRunner(BankAccountRepository bankAccountRepository, CustomerRestClient customerRestClient) {
         return args -> {
 
-            customerRestClient.getAllCustomer().stream().forEach(e -> {
+            customerRestClient.getAllCustomer().stream().forEach( e -> {
                 List<BankAccount> bankAccounts = List.of(
                         BankAccount.builder()
                                 .accountId(String.valueOf(UUID.randomUUID()))

@@ -1,4 +1,4 @@
-package org.charaf.cutomerservice.entities;
+package org.charaf.customerservice.entities;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;

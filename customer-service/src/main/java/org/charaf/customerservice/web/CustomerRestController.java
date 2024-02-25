@@ -1,8 +1,11 @@
-package org.charaf.cutomerservice.web;
+package org.charaf.customerservice.web;
 
+import org.apache.tomcat.util.http.parser.Authorization;
 import org.charaf.customerservice.config.GlobalConfig;
-import org.charaf.cutomerservice.entities.Customer;
-import org.charaf.cutomerservice.repository.CustomerRepository;
+import org.charaf.customerservice.entities.Customer;
+import org.charaf.customerservice.repository.CustomerRepository;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,11 +24,13 @@ private CustomerRepository customerRepository;
         this.globalConfig = globalConfig;
     }
     @GetMapping("/customers")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public List<Customer> getAllCustomer(){
         return customerRepository.findAll();
     }
 
     @GetMapping("/customers/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Customer getCustomer(@PathVariable Long id){
         return customerRepository.findById(id).orElseThrow();
     }
@@ -33,6 +38,12 @@ private CustomerRepository customerRepository;
     @GetMapping("/testConfig")
     public List<Integer> getCustomerConfig(){
         return List.of(globalConfig.getX(),globalConfig.getY());
+    }
+
+    //pour verifier les parametre d'authentication specifiquement les authorities(roles)
+    @GetMapping("/auth")
+    public Authentication getAuthentication(Authentication authentication){
+        return authentication;
     }
 
 }
