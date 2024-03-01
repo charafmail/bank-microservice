@@ -1,15 +1,13 @@
 package org.charaf.customerservice.web;
 
-import org.apache.tomcat.util.http.parser.Authorization;
+import jakarta.validation.Valid;
 import org.charaf.customerservice.config.GlobalConfig;
-import org.charaf.customerservice.entities.Customer;
-import org.charaf.customerservice.repository.CustomerRepository;
+import org.charaf.customerservice.dto.CustomerDTO;
+import org.charaf.customerservice.service.CustomerService;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,22 +15,41 @@ import java.util.List;
 @RequestMapping("/api/v1")
 public class CustomerRestController {
 
-private CustomerRepository customerRepository;
+private CustomerService customerService;
     private GlobalConfig globalConfig;
-    public CustomerRestController(CustomerRepository customerRepository, GlobalConfig globalConfig) {
-        this.customerRepository = customerRepository;
+    public CustomerRestController(CustomerService customerService, GlobalConfig globalConfig) {
+        this.customerService = customerService;
         this.globalConfig = globalConfig;
     }
     @GetMapping("/customers")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public List<Customer> getAllCustomer(){
-        return customerRepository.findAll();
+    public List<CustomerDTO> getAllCustomer(){
+        return customerService.getAllCustomers();
     }
 
     @GetMapping("/customers/{id}")
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Customer getCustomer(@PathVariable Long id){
-        return customerRepository.findById(id).orElseThrow();
+    public CustomerDTO getCustomer(@PathVariable Long id){
+        return customerService.findCustomerById(id);
+    }
+
+    @GetMapping("/customers/search")
+    public List<CustomerDTO> searchCustomers(@RequestParam String keyword){
+        return customerService.searchCustomers(keyword);
+    }
+    @PostMapping("/customers")
+    @ResponseStatus(HttpStatus.CREATED)
+    public CustomerDTO saveCustomer(@RequestBody @Valid CustomerDTO customerDTO){
+        return customerService.saveNewCustomer(customerDTO);
+    }
+    @PutMapping("/customers/{id}")
+    public CustomerDTO updateCustomer(@PathVariable Long id,@RequestBody CustomerDTO customerDTO){
+        return customerService.updateCustomer(id,customerDTO);
+    }
+    @DeleteMapping("/customers/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteCustomer(@PathVariable Long id){
+        customerService.deleteCustomer(id);
     }
 
     @GetMapping("/testConfig")

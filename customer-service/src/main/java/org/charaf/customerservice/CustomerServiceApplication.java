@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import java.util.List;
 
@@ -20,6 +21,7 @@ public class CustomerServiceApplication {
 	}
 
 @Bean
+@Profile("!test")
 	public CommandLineRunner CustomerServiceApplication(CustomerRepository customerRepository) {
 	return args -> {
 		List<Customer> customers = List.of(
